@@ -1,14 +1,11 @@
-import { View } from "react-native";
+import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const MyTripList = () => {
   return (
     <SafeAreaView>
-      <View>
-        <View style={{ width: 300, height: 300, backgroundColor: "blue" }} />
-        <View style={{ width: 300, height: 300, backgroundColor: "red" }} />
-        <View style={{ width: 300, height: 300, backgroundColor: "black" }} />
-      </View>
+      <Link href="/(trip)/createTrip">여행 생성 화면으로 이동</Link>
+      <Link href="/(trip)/updateTrip">여행 수정 화면으로 이동</Link>
     </SafeAreaView>
   );
 };
