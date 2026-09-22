@@ -15,7 +15,7 @@ interface InputProps extends TextInputProps {
 const Input = ({ label, ...props }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.inputLabel}>{label ? label : "제목"}</Text>
+      <Text style={styles.inputLabel}>{label}</Text>
       <TextInput
         style={styles.input}
         {...props}
