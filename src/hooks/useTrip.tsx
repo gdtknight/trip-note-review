@@ -1,8 +1,8 @@
 import { api } from "@/api";
-import { RequestCreateType } from "@/types/tripType";
-import { useMutation } from "@tanstack/react-query";
+import { RequestCreateType, ResponseTripListType } from "@/types/tripType";
+import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 
-const useCreateTrip = () => {
+export const useCreateTrip = () => {
   // react-query 에서 제공되는 훅
   // 서버 데이터 생성, 삭제, 수정 할때 사용
   // 성공시 onSuccess 실행
@@ -16,4 +16,12 @@ const useCreateTrip = () => {
   });
 };
 
-export default useCreateTrip;
+export const useGetTripList = (): UseQueryResult<ResponseTripListType> => {
+  return useQuery({
+    queryKey: ["trip-list"],
+    queryFn: async () => {
+      const res = await api.get("/trips");
+      return res.data;
+    },
+  });
+};

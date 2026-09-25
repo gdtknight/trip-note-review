@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import Input from "@/components/input";
 import { theme } from "@/constants/theme";
-import useCreateTrip from "@/hooks/useCreateTrip";
+import { useCreateTrip } from "@/hooks/useTrip";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
