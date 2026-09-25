@@ -1,6 +1,11 @@
 import { api } from "@/api";
 import { RequestCreateType, ResponseTripListType } from "@/types/tripType";
-import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 export const useCreateTrip = () => {
   // react-query 에서 제공되는 훅
@@ -8,10 +13,22 @@ export const useCreateTrip = () => {
   // 성공시 onSuccess 실행
   // 실패시 onError 실행
   // 업데이트후에는 invalidateQueries 사용해서 캐시 무효화
+  // return useMutation({
+  // mutationFn: async (body: RequestCreateType) => {
+  // const res = await api.post("/trips", body);
+  // return res.data;
+  // },
+  // });
+  // -------------------------------------------------
+
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (body: RequestCreateType) => {
       const res = await api.post("/trips", body);
       return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trip-list"] });
     },
   });
 };
