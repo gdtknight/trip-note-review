@@ -1,14 +1,29 @@
 import { theme } from "@/constants/theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 import { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const Tripcard = () => {
+interface TripCardProps {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+}
+
+const Tripcard = ({ id, title, startDate, endDate }: TripCardProps) => {
+  const router = useRouter();
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => router.navigate(`/(trips)/${id}`)}
+    >
       <View>
-        <Text style={styles.title}>제목</Text>
-        <Text style={styles.dateText}>시작날짜 ~ 종료날짜</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.dateText}>
+          {startDate} ~ {endDate}
+        </Text>
       </View>
       <View>
         <Pressable>
