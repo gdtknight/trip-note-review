@@ -1,5 +1,11 @@
 import { theme } from "@/constants/theme";
+import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 interface ModalProps {
   selectedId: string | null;
@@ -16,12 +22,30 @@ const Modal = ({
   updateTrip,
   removeTrip,
 }: ModalProps) => {
+  const opacity = useSharedValue(0);
+  const scale = useSharedValue(0.8);
+
+  useEffect(() => {
+    if (isOpen) {
+      opacity.value = withTiming(1, { duration: 300 });
+      scale.value = withTiming(1, { duration: 300 });
+    } else {
+      opacity.value = withTiming(0, { duration: 150 });
+      scale.value = withTiming(0.8, { duration: 150 });
+    }
+  }, [isOpen, opacity, scale]);
+
+  const contentStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ scale: scale.value }],
+  }));
+
   if (!isOpen) return null;
 
   return (
     <View style={styles.container}>
       <Pressable style={styles.dimArea} onPress={closeModal} />
-      <View style={styles.content}>
+      <Animated.View style={[styles.content, contentStyle]}>
         <Pressable
           style={styles.button}
           onPress={() => updateTrip(selectedId!)}
@@ -34,7 +58,7 @@ const Modal = ({
         >
           <Text>삭제</Text>
         </Pressable>
-      </View>
+      </Animated.View>
     </View>
   );
 };
