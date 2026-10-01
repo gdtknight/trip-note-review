@@ -2,13 +2,21 @@ import PlusButton from "@/components/PlusButton";
 import TripCard from "@/components/TripCard";
 import { theme } from "@/constants/theme";
 import { useGetTripList } from "@/hooks/useTrip";
+import { useTripStore } from "@/store/tripStore";
 import { useRouter } from "expo-router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const CACHE_KEY = "tripListCache";
+const CACHE_EXPIRY_KEY = "tripCacheExpiry";
+const CACHE_DURATION = 5 * 60 * 1000; // 5분
+
 const MyTripList = () => {
   const router = useRouter();
+  const { cachedTrips } = useTripStore((state) => state);
+  const { setCachedTrips } = useTripStore((state) => state.actions);
+
   const {
     data: trips,
     hasNextPage,
@@ -16,14 +24,29 @@ const MyTripList = () => {
     isFetchingNextPage,
   } = useGetTripList();
 
+  useEffect(() => {
+    if (trips?.pages[0]) {
+      setCachedTrips(trips.pages[0]);
+    }
+  }, [trips, setCachedTrips]);
+
   const combinedTrips = useMemo(() => {
-    const data = trips?.pages.flatMap((page) => page.data) ?? [];
-    const meta = trips?.pages[0].meta;
-    return {
-      data,
-      meta,
-    };
-  }, [trips]);
+    // trips 가 존재하면 trips 반환
+    // trips 가 존재하지 않으면 캐쉬 반환
+    // 둘다 존재하지 않으면 빈 배열 반환
+    if (trips?.pages.length) {
+      const data = trips?.pages.flatMap((page) => page.data) ?? [];
+      const meta = trips?.pages[0].meta;
+      return {
+        data,
+        meta,
+      };
+    }
+    if (cachedTrips) {
+      return { data: cachedTrips.data, meta: cachedTrips.meta };
+    }
+    return { data: [], meta: undefined };
+  }, [trips, cachedTrips]);
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
