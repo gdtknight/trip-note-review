@@ -2,10 +2,9 @@ import PlusButton from "@/components/PlusButton";
 import TripCard from "@/components/TripCard";
 import { theme } from "@/constants/theme";
 import { useGetTripList } from "@/hooks/useTrip";
-import { storageService } from "@/services/storageService";
-import { ResponseTripListType } from "@/types/tripType";
+import { useTripStore } from "@/store/tripStore";
 import { useRouter } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -15,7 +14,9 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5분
 
 const MyTripList = () => {
   const router = useRouter();
-  const [cacheData, setCacheData] = useState<ResponseTripListType | null>(null);
+  const { cachedTrips } = useTripStore((state) => state);
+  const { setCachedTrips } = useTripStore((state) => state.actions);
+
   const {
     data: trips,
     hasNextPage,
@@ -23,38 +24,11 @@ const MyTripList = () => {
     isFetchingNextPage,
   } = useGetTripList();
 
-  const saveToCache = useCallback(async (data: ResponseTripListType) => {
-    await Promise.all([
-      storageService.setItem(CACHE_KEY, JSON.stringify(data)),
-      storageService.setItem(
-        CACHE_EXPIRY_KEY,
-        (Date.now() + CACHE_DURATION).toString(),
-      ),
-    ]);
-  }, []);
-
   useEffect(() => {
     if (trips?.pages[0]) {
-      saveToCache(trips.pages[0]);
+      setCachedTrips(trips.pages[0]);
     }
-  }, [trips, saveToCache]);
-
-  const loadFromCache = useCallback(async () => {
-    const [cached, expiry] = await Promise.all([
-      storageService.getItem(CACHE_KEY),
-      storageService.getItem(CACHE_EXPIRY_KEY),
-    ]);
-    if (cached && expiry) {
-      const isExpired = Date.now() > expiry;
-      if (!isExpired) {
-        setCacheData(cached);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    loadFromCache();
-  }, [loadFromCache]);
+  }, [trips, setCachedTrips]);
 
   const combinedTrips = useMemo(() => {
     // trips 가 존재하면 trips 반환
@@ -68,11 +42,11 @@ const MyTripList = () => {
         meta,
       };
     }
-    if (cacheData) {
-      return { data: cacheData, meta: cacheData.meta };
+    if (cachedTrips) {
+      return { data: cachedTrips.data, meta: cachedTrips.meta };
     }
     return { data: [], meta: undefined };
-  }, [trips]);
+  }, [trips, cachedTrips]);
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
