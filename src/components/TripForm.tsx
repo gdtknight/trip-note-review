@@ -39,6 +39,11 @@ const TripForm = ({
     initialEndDate || undefined,
   );
 
+  const isDirty =
+    title !== initialTitle ||
+    startDate?.getTime() !== initialStartDate?.getTime() ||
+    endDate?.getTime() !== initialEndDate?.getTime();
+
   const handleChangeText = useCallback(
     (text: string) => {
       setTitle(text);
@@ -81,10 +86,13 @@ const TripForm = ({
               </View>
             </View>
           </View>
-          <View style={styles.buttonContainer}>
+          <View
+            style={[styles.buttonContainer, { opacity: isDirty ? 1 : 0.4 }]}
+          >
             <Button
               label={label}
               onPress={() => onSubmit({ title, startDate, endDate })}
+              disabled={!isDirty}
             />
           </View>
         </ScrollView>
