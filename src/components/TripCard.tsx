@@ -9,9 +9,16 @@ interface TripCardProps {
   title: string;
   startDate: string;
   endDate: string;
+  handleOpenModal: (id: string) => void;
 }
 
-const Tripcard = ({ id, title, startDate, endDate }: TripCardProps) => {
+const Tripcard = ({
+  id,
+  title,
+  startDate,
+  endDate,
+  handleOpenModal,
+}: TripCardProps) => {
   const router = useRouter();
 
   return (
@@ -26,7 +33,7 @@ const Tripcard = ({ id, title, startDate, endDate }: TripCardProps) => {
         </Text>
       </View>
       <View>
-        <Pressable>
+        <Pressable onPress={() => handleOpenModal(id)}>
           <AntDesign name="more" size={24} color="black" />
         </Pressable>
       </View>
