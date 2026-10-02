@@ -12,7 +12,7 @@ interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
   updateTrip: (id: string) => void;
-  removeTrip: (id: string) => void;
+  deleteTrip: (id: string) => void;
 }
 
 const Modal = ({
@@ -20,7 +20,7 @@ const Modal = ({
   isOpen,
   closeModal,
   updateTrip,
-  removeTrip,
+  deleteTrip,
 }: ModalProps) => {
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
@@ -54,7 +54,7 @@ const Modal = ({
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => removeTrip(selectedId!)}
+          onPress={() => deleteTrip(selectedId!)}
         >
           <Text>삭제</Text>
         </Pressable>

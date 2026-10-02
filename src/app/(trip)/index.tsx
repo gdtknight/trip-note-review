@@ -41,7 +41,7 @@ const MyTripList = () => {
     });
   };
 
-  const removeTrip = (tripId: string) => {
+  const deleteTrip = (tripId: string) => {
     mutateAsync(tripId, {
       onSuccess: () => {
         handleCloseModal();
@@ -116,7 +116,7 @@ const MyTripList = () => {
         isOpen={isOpen}
         closeModal={handleCloseModal}
         updateTrip={updateTrip}
-        removeTrip={removeTrip}
+        deleteTrip={deleteTrip}
       />
     </SafeAreaView>
   );
