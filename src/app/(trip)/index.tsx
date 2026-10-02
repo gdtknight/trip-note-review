@@ -18,7 +18,7 @@ const MyTripList = () => {
   const { cachedTrips } = useTripStore((state) => state);
   const { setCachedTrips } = useTripStore((state) => state.actions);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const { mutateAsync } = useDeleteTrip();
 
