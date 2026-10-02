@@ -1,19 +1,8 @@
-import Button from "@/components/Button";
-import Input from "@/components/input";
-import { theme } from "@/constants/theme";
+import TripForm from "@/components/TripForm";
 import { useGetTrip, useUpdateTrip } from "@/hooks/useTrip";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 const UpdateTripScreen = () => {
   const { tripId } = useLocalSearchParams();
@@ -22,7 +11,8 @@ const UpdateTripScreen = () => {
   const [title, setTitle] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const { data } = useGetTrip(tripId as string);
+
+  const { data, isLoading } = useGetTrip(tripId as string);
 
   const { mutateAsync } = useUpdateTrip();
 
@@ -34,13 +24,17 @@ const UpdateTripScreen = () => {
     }
   }, [data]);
 
-  const updateTrip = () => {
+  const handleUpdateTrip = (data: {
+    title: string;
+    startDate?: Date;
+    endDate?: Date;
+  }) => {
     mutateAsync(
       {
         tripId: tripId as string,
-        title,
-        startDate,
-        endDate,
+        title: data.title,
+        startDate: data.startDate,
+        endDate: data.endDate,
       },
       {
         onSuccess: () => {
@@ -50,81 +44,23 @@ const UpdateTripScreen = () => {
     );
   };
 
-  const handleChangeText = useCallback(
-    (text: string) => {
-      setTitle(text);
-    },
-    [title],
-  );
+  if (isLoading || !data) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS == "ios" ? 100 : 0}
-    >
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Input label="제목" value={title} onChangeText={handleChangeText} />
-          <View>
-            <Text style={styles.label}>여행 기간</Text>
-            <View>
-              <View style={styles.dateContainer}>
-                <Text>시작일</Text>
-                <DateTimePicker
-                  value={startDate ?? new Date()}
-                  mode="date"
-                  display="default"
-                  locale="ko-KR"
-                  onValueChange={(_, date) => setStartDate(date)}
-                />
-              </View>
-              <View style={[styles.dateContainer, { marginTop: 12 }]}>
-                <Text>종료일</Text>
-                <DateTimePicker
-                  value={endDate ?? new Date()}
-                  mode="date"
-                  display="default"
-                  locale="ko-KR"
-                  onValueChange={(_, date) => setEndDate(date)}
-                  minimumDate={startDate}
-                />
-              </View>
-            </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button label="여행 수정" onPress={updateTrip} />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+    <TripForm
+      initialTitle={data?.title}
+      initialStartDate={data ? new Date(data.startDate) : new Date()}
+      initialEndDate={data ? new Date(data.endDate) : new Date()}
+      label="수정하기"
+      onSubmit={handleUpdateTrip}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 40,
-    paddingHorizontal: 20,
-  },
-  scrollContainer: {
-    gap: 30,
-    flexGrow: 1,
-  },
-  label: {
-    marginBottom: 20,
-    fontSize: 18,
-    fontFamily: theme.fonts.regular,
-  },
-  dateContainer: {
-    gap: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    marginTop: "auto",
-  },
-});
 
 export default UpdateTripScreen;
