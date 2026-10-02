@@ -2,7 +2,7 @@ import Modal from "@/components/Modal";
 import PlusButton from "@/components/PlusButton";
 import TripCard from "@/components/TripCard";
 import { theme } from "@/constants/theme";
-import { useGetTripList } from "@/hooks/useTrip";
+import { useDeleteTrip, useGetTripList } from "@/hooks/useTrip";
 import { useTripStore } from "@/store/tripStore";
 import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
@@ -19,6 +19,8 @@ const MyTripList = () => {
   const { setCachedTrips } = useTripStore((state) => state.actions);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>();
+
+  const { mutateAsync } = useDeleteTrip();
 
   const handleOpenModal = (id: string) => {
     setIsOpen(true);
@@ -40,7 +42,11 @@ const MyTripList = () => {
   };
 
   const removeTrip = (tripId: string) => {
-    console.log(tripId);
+    mutateAsync(tripId, {
+      onSuccess: () => {
+        handleCloseModal();
+      },
+    });
   };
 
   const {
