@@ -82,8 +82,9 @@ export const useUpdateTrip = () => {
       });
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["trip-list"] });
+      queryClient.invalidateQueries({ queryKey: ["trip", variables.tripId] });
     },
   });
 };
