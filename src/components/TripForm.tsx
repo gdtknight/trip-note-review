@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Input from "@/components/input";
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 20,
     fontSize: 18,
-    fontFamily: theme.fonts.regular,
+    fontFamily: Theme.fonts.regular,
   },
   dateContainer: {
     gap: 20,

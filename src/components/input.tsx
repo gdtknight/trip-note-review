@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { memo } from "react";
 import {
   StyleSheet,
@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 18,
-    fontFamily: theme.fonts.regular,
+    fontFamily: Theme.fonts.regular,
   },
   input: {
     height: 52,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: 20,
   },
 });

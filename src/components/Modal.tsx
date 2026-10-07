@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   content: {
     width: 200,
     height: 150,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: 20,
     padding: 20,
     justifyContent: "center",
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
     borderWidth: 1,
-    borderColor: theme.colors.gray,
+    borderColor: Theme.colors.gray,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
-    fontFamily: theme.fonts.medium,
+    fontFamily: Theme.fonts.medium,
   },
 });
 

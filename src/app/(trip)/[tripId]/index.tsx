@@ -1,6 +1,6 @@
 import PlusButton from "@/components/PlusButton";
 import TripDetailCard from "@/components/TripDetailCard";
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { useGetTripDetailList } from "@/hooks/useTripDetail";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
@@ -54,7 +54,7 @@ const TripDetailListScreen = () => {
               fontSize: 16,
               marginTop: 50,
               textAlign: "center",
-              color: theme.colors.gray,
+              color: Theme.colors.gray,
             }}
           >
             여행 기록이 없습니다.

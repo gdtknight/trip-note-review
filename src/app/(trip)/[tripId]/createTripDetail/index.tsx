@@ -1,5 +1,5 @@
 import Input from "@/components/input";
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: "100%",
     height: 150,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: 20,
     gap: 10,
     justifyContent: "center",
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   },
   imageText: {
     fontSize: 14,
-    fontFamily: theme.fonts.regular,
-    color: theme.colors.gray,
+    fontFamily: Theme.fonts.regular,
+    color: Theme.colors.gray,
   },
   image: {
     width: "100%",

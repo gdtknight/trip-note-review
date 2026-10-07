@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { TripDetailItemType } from "@/types/tripDetailType";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "expo-image";
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 170,
-    backgroundColor: theme.colors.gray,
+    backgroundColor: Theme.colors.gray,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },
@@ -39,18 +39,18 @@ const styles = StyleSheet.create({
     padding: 24,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   title: {
     fontSize: 20,
-    fontFamily: theme.fonts.bold,
+    fontFamily: Theme.fonts.bold,
   },
   date: {
     fontSize: 16,
-    fontFamily: theme.fonts.regular,
-    color: theme.colors.gray,
+    fontFamily: Theme.fonts.regular,
+    color: Theme.colors.gray,
   },
 });
 

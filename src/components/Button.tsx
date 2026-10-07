@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { memo } from "react";
 import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
 
@@ -11,9 +11,9 @@ const Button = ({ label, ...props }: ButtonProps) => {
     <Pressable style={styles.button} {...props}>
       <Text
         style={{
-          color: theme.colors.white,
+          color: Theme.colors.white,
           fontSize: 18,
-          fontFamily: theme.fonts.semibold,
+          fontFamily: Theme.fonts.semibold,
         }}
       >
         {label}
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 52,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: Theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
   },
