@@ -106,7 +106,9 @@ const CreateTripDetailScreen = () => {
           <Input label="제목" />
           <Input
             label="날씨"
-            value={convertWeather(weatherData?.weather[0].main)}
+            value={convertWeather(
+              weatherData?.weather[0].main ?? "날씨 정보를 불러올 수 없습니다.",
+            )}
             editable={false}
           />
           <Input label="내용" multiline />
