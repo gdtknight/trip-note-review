@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import Input from "@/components/input";
+import Input from "@/components/Input";
 import { Theme } from "@/constants/Theme";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";

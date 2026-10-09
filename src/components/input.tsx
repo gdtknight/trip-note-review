@@ -12,16 +12,17 @@ interface InputProps extends TextInputProps {
   label: string;
 }
 
-const Input = ({ label, ...props }: InputProps) => {
+const Input = ({ label, editable, ...props }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, editable === false && styles.disabledInput]}
         {...props}
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
+        editable={editable}
       />
     </View>
   );
@@ -39,6 +40,9 @@ const styles = StyleSheet.create({
     height: 52,
     backgroundColor: Theme.colors.white,
     borderRadius: 20,
+  },
+  disabledInput: {
+    backgroundColor: Theme.colors.gray100,
   },
 });
 

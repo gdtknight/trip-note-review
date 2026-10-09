@@ -1,4 +1,4 @@
-import Input from "@/components/input";
+import Input from "@/components/Input";
 import { Theme } from "@/constants/Theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "expo-image";
@@ -59,6 +59,7 @@ const CreateTripDetailScreen = () => {
             </>
           )}
           <Input label="제목" />
+          <Input label="날씨" editable={false} />
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>
