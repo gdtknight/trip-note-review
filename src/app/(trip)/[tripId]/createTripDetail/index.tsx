@@ -1,10 +1,13 @@
+import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Theme } from "@/constants/Theme";
+import { useGetWeather } from "@/hooks/useTripDetail";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -13,11 +16,21 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CreateTripDetailScreen = () => {
   const [image, setImage] = useState<String | null>(null);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null,
+  );
+
+  const { data: weatherData } = useGetWeather(
+    location?.coords.latitude ?? 0,
+    location?.coords.longitude ?? 0,
+  );
+
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -40,6 +53,38 @@ const CreateTripDetailScreen = () => {
     }
   };
 
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert("권한 요청을 거부 했습니다.");
+        return;
+      }
+      const currentLocation = await Location.getCurrentPositionAsync();
+      setLocation(currentLocation);
+    };
+
+    getCurrentLocation();
+  }, []);
+
+  const convertWeather = (weather: string) => {
+    switch (weather) {
+      case "Clear":
+        return "맑음";
+      case "Clouds":
+        return "흐림";
+      case "Rain":
+        return "비";
+      case "Snow":
+        return "눈";
+      case "Mist":
+        return "안개";
+      default:
+        return weather;
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -59,7 +104,15 @@ const CreateTripDetailScreen = () => {
             </>
           )}
           <Input label="제목" />
-          <Input label="날씨" editable={false} />
+          <Input
+            label="날씨"
+            value={convertWeather(weatherData?.weather[0].main)}
+            editable={false}
+          />
+          <Input label="내용" multiline />
+          <View style={{ marginTop: "auto" }}>
+            <Button label="여행기록 추가" />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>
