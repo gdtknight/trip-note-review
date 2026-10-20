@@ -1,11 +1,12 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Theme } from "@/constants/Theme";
-import { useGetWeather } from "@/hooks/useTripDetail";
+import { useCreateTripDetail, useGetWeather } from "@/hooks/useTripDetail";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { useEffect, useState } from "react";
 import {
@@ -21,15 +22,37 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CreateTripDetailScreen = () => {
-  const [image, setImage] = useState<String | null>(null);
+  const { tripId } = useLocalSearchParams();
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null,
   );
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const { data: weatherData } = useGetWeather(
     location?.coords.latitude ?? 0,
     location?.coords.longitude ?? 0,
   );
+
+  const { mutateAsync } = useCreateTripDetail();
+
+  const createTrip = async () => {
+    await mutateAsync(
+      {
+        tripId: String(tripId),
+        title: title,
+        content: content,
+        image: image as ImagePicker.ImagePickerAsset,
+        weather: convertWeather(weatherData?.weather[0].main) ?? "",
+      },
+      {
+        onSuccess: () => {
+          router.back();
+        },
+      },
+    );
+  };
 
   const pickImage = async () => {
     const permissionResult =
@@ -49,7 +72,7 @@ const CreateTripDetailScreen = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.assets[0]);
     }
   };
 
@@ -94,7 +117,7 @@ const CreateTripDetailScreen = () => {
       <SafeAreaView edges={["bottom"]} style={styles.container}>
         <ScrollView contentContainerStyle={styles.formContainer}>
           {image ? (
-            <Image source={{ uri: image }} style={styles.image} />
+            <Image source={{ uri: image.uri }} style={styles.image} />
           ) : (
             <>
               <Pressable onPress={pickImage} style={styles.imageContainer}>
@@ -103,17 +126,37 @@ const CreateTripDetailScreen = () => {
               </Pressable>
             </>
           )}
-          <Input label="제목" />
+          <Input
+            label="제목"
+            style={{
+              padding: 20,
+            }}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
+          />
           <Input
             label="날씨"
+            style={{
+              padding: 20,
+            }}
             value={convertWeather(
               weatherData?.weather[0].main ?? "날씨 정보를 불러올 수 없습니다.",
             )}
             editable={false}
           />
-          <Input label="내용" multiline />
+          <Input
+            label="내용"
+            value={content}
+            onChangeText={(text) => setContent(text)}
+            multiline
+            style={{
+              height: 150,
+              paddingVertical: 10,
+              textAlignVertical: "top",
+            }}
+          />
           <View style={{ marginTop: "auto" }}>
-            <Button label="여행기록 추가" />
+            <Button label="여행기록 추가" onPress={createTrip} />
           </View>
         </ScrollView>
       </SafeAreaView>
