@@ -13,11 +13,15 @@ interface TripDetailCardProps {
 const TripDetailCard = ({ item, handleModal }: TripDetailCardProps) => {
   return (
     <Pressable>
-      <Image style={styles.image} contentFit="cover" source={item.image} />
+      <Image
+        contentFit="cover"
+        source={{ uri: item.image }}
+        style={styles.image}
+      />
       <View style={styles.container}>
         <View style={{ gap: 10 }}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.date}>{item.createdAt.toString()}</Text>
+          <Text style={styles.date}>{String(item.createdAt)}</Text>
         </View>
         <Pressable onPress={handleModal}>
           <AntDesign name="more" size={24} color="black" />
