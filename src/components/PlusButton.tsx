@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Pressable, PressableProps, StyleSheet } from "react-native";
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 40,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: Theme.colors.primary,
   },
 });
 

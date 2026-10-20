@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { memo } from "react";
 import {
   StyleSheet,
@@ -12,16 +12,21 @@ interface InputProps extends TextInputProps {
   label: string;
 }
 
-const Input = ({ label, ...props }: InputProps) => {
+const Input = ({ label, editable, style, ...props }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          editable === false && styles.disabledInput,
+          style,
+        ]}
         {...props}
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
+        editable={editable}
       />
     </View>
   );
@@ -33,12 +38,15 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 18,
-    fontFamily: theme.fonts.regular,
+    fontFamily: Theme.fonts.regular,
   },
   input: {
     height: 52,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: 20,
+  },
+  disabledInput: {
+    backgroundColor: Theme.colors.gray100,
   },
 });
 

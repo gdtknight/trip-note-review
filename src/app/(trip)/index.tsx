@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import PlusButton from "@/components/PlusButton";
 import TripCard from "@/components/TripCard";
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import { useDeleteTrip, useGetTripList } from "@/hooks/useTrip";
 import { useTripStore } from "@/store/tripStore";
 import { useRouter } from "expo-router";
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontFamily: theme.fonts.bold,
+    fontFamily: Theme.fonts.bold,
     marginBottom: 30,
   },
   buttonContainer: {

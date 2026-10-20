@@ -1,4 +1,4 @@
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/Theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import { memo } from "react";
@@ -24,7 +24,9 @@ const Tripcard = ({
   return (
     <Pressable
       style={styles.container}
-      onPress={() => router.navigate(`/(trips)/${id}`)}
+      onPress={() => {
+        router.navigate(`/${id}`);
+      }}
     >
       <View>
         <Text style={styles.title}>{title}</Text>
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 20,
     height: 80,
-    backgroundColor: theme.colors.white,
+    backgroundColor: Theme.colors.white,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -53,12 +55,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily: theme.fonts.semibold,
+    fontFamily: Theme.fonts.semibold,
   },
   dateText: {
     fontSize: 16,
-    color: theme.colors.gray,
-    fontFamily: theme.fonts.regular,
+    color: Theme.colors.gray,
+    fontFamily: Theme.fonts.regular,
   },
 });
 
