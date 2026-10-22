@@ -11,16 +11,16 @@ interface ModalProps {
   selectedId: string | null;
   isOpen: boolean;
   closeModal: () => void;
-  updateTrip: (id: string) => void;
-  deleteTrip: (id: string) => void;
+  updateHandler: (id: string) => void;
+  deleteHandler: (id: string) => void;
 }
 
 const Modal = ({
   selectedId,
   isOpen,
   closeModal,
-  updateTrip,
-  deleteTrip,
+  updateHandler: updateHandler,
+  deleteHandler: deleteHandler,
 }: ModalProps) => {
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
@@ -48,13 +48,13 @@ const Modal = ({
       <Animated.View style={[styles.content, contentStyle]}>
         <Pressable
           style={styles.button}
-          onPress={() => updateTrip(selectedId!)}
+          onPress={() => updateHandler(selectedId!)}
         >
           <Text style={styles.text}>수정</Text>
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => deleteTrip(selectedId!)}
+          onPress={() => deleteHandler(selectedId!)}
         >
           <Text>삭제</Text>
         </Pressable>
