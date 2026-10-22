@@ -22,3 +22,11 @@ export interface RequestCreateTripDetailType {
   weather: string;
   image: ImagePickerAsset;
 }
+
+export interface RequestUpdateTripDetailType {
+  tripDetailId: string;
+  title: string;
+  content: string;
+  weather: string;
+  image: ImagePickerAsset;
+}
