@@ -115,8 +115,8 @@ const MyTripList = () => {
         selectedId={selectedId}
         isOpen={isOpen}
         closeModal={handleCloseModal}
-        updateTrip={updateTrip}
-        deleteTrip={deleteTrip}
+        updateHandler={updateTrip}
+        deleteHandler={deleteTrip}
       />
     </SafeAreaView>
   );

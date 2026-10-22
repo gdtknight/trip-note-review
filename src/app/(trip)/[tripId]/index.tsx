@@ -1,9 +1,13 @@
+import Modal from "@/components/Modal";
 import PlusButton from "@/components/PlusButton";
 import TripDetailCard from "@/components/TripDetailCard";
 import { Theme } from "@/constants/Theme";
-import { useGetTripDetailList } from "@/hooks/useTripDetail";
+import {
+  useDeleteTripDetail,
+  useGetTripDetailList,
+} from "@/hooks/useTripDetail";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -16,6 +20,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const TripDetailListScreen = () => {
   const { tripId } = useLocalSearchParams();
   const router = useRouter();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { mutateAsync } = useDeleteTripDetail();
 
   const {
     data: tripDetailList,
@@ -33,6 +41,27 @@ const TripDetailListScreen = () => {
     };
   }, [tripDetailList]);
 
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setSelectedId(null);
+  };
+
+  const onUpdateTripDetail = (tripDetailId: string) => {
+    router.navigate({
+      pathname: "/(trip)/[tripId]/updateTripDetail",
+      params: { tripId: tripId as string, tripDetailId: tripDetailId },
+    });
+    handleCloseModal();
+  };
+
+  const onDeleteTripDetail = (tripDetailId: string) => {
+    mutateAsync(tripDetailId, {
+      onSuccess: () => {
+        handleCloseModal();
+      },
+    });
+  };
+
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -46,7 +75,13 @@ const TripDetailListScreen = () => {
         contentContainerStyle={{ gap: 10 }}
         keyExtractor={(tripDetail) => tripDetail.id}
         renderItem={({ item: tripDetail }) => (
-          <TripDetailCard item={tripDetail} handleModal={() => {}} />
+          <TripDetailCard
+            item={tripDetail}
+            handleModal={() => {
+              setSelectedId(tripDetail.id);
+              setIsOpen(true);
+            }}
+          />
         )}
         ListEmptyComponent={() => (
           <Text
@@ -69,6 +104,13 @@ const TripDetailListScreen = () => {
           onPress={() => router.navigate(`/${tripId}/createTripDetail`)}
         />
       </View>
+      <Modal
+        isOpen={isOpen}
+        selectedId={selectedId}
+        closeModal={handleCloseModal}
+        updateHandler={onUpdateTripDetail}
+        deleteHandler={onDeleteTripDetail}
+      />
     </SafeAreaView>
   );
 };
