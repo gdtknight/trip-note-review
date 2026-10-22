@@ -5,6 +5,8 @@ export interface TripDetailItemType {
   id: string;
   title: string;
   image: string;
+  content: string;
+  weather: string;
   createdAt: string | Date;
 }
 
