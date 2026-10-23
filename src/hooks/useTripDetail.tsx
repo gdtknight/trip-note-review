@@ -146,8 +146,11 @@ export const useUpdateTripDetail = () => {
       );
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, body) => {
       queryClient.invalidateQueries({ queryKey: ["trip-item-list"] });
+      queryClient.invalidateQueries({
+        queryKey: ["trip-detail", body.tripDetailId],
+      });
     },
   });
 };
