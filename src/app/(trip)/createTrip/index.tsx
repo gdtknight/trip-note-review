@@ -7,7 +7,7 @@ const CreateTripScreen = () => {
 
   const { mutateAsync } = useCreateTrip();
 
-  const handleCreateTrip = (data: {
+  const createTrip = (data: {
     title: string;
     startDate?: Date;
     endDate?: Date;
@@ -26,7 +26,7 @@ const CreateTripScreen = () => {
     );
   };
 
-  return <TripForm label="여행 생성" onSubmit={handleCreateTrip} />;
+  return <TripForm label="여행 생성" onSubmit={createTrip} />;
 };
 
 export default CreateTripScreen;
