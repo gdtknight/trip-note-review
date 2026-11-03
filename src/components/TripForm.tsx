@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Theme } from "@/constants/Theme";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -29,8 +28,6 @@ const TripForm = ({
   label,
   onSubmit,
 }: TripFormProps) => {
-  const router = useRouter();
-
   const [title, setTitle] = useState<string>(initialTitle || "");
   const [startDate, setStartDate] = useState<Date | undefined>(
     initialStartDate || undefined,

@@ -24,7 +24,7 @@ const UpdateTripScreen = () => {
     }
   }, [data]);
 
-  const handleUpdateTrip = (data: {
+  const updateTrip = (data: {
     title: string;
     startDate?: Date;
     endDate?: Date;
@@ -58,7 +58,7 @@ const UpdateTripScreen = () => {
       initialStartDate={data ? new Date(data.startDate) : new Date()}
       initialEndDate={data ? new Date(data.endDate) : new Date()}
       label="수정하기"
-      onSubmit={handleUpdateTrip}
+      onSubmit={updateTrip}
     />
   );
 };

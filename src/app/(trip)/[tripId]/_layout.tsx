@@ -1,16 +1,18 @@
+import { useTripTitleStore } from "@/store/useTripTitleStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, useRouter } from "expo-router";
 import { Pressable } from "react-native";
 
 const TripDetailLayout = () => {
   const router = useRouter();
+  const { title } = useTripTitleStore((state) => state);
 
   return (
     <Stack>
       <Stack.Screen
         name="index"
         options={{
-          title: "여행 상세",
+          title: title,
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <MaterialIcons
